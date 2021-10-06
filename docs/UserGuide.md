@@ -3,7 +3,7 @@ layout: page
 title: User Guide
 ---
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+**PlaceBook (PB) is a desktop app for managing contacts and appointments, optimized for use via a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI).** If you can type fast, PB can get your contact management tasks done faster than traditional GUI apps.
 
 * Table of Contents
 {:toc}
@@ -14,9 +14,9 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 1. Ensure you have Java `11` or above installed in your Computer.
 
-1. Download the latest `addressbook.jar` from [here](https://github.com/se-edu/addressbook-level3/releases).
+1. Download the latest `placebook.jar` from [here](https://github.com/AY2122S1-CS2103T-T12-3/tp/releases).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+1. Copy the file to the folder you want to use as the _home folder_ for your PlaceBook.
 
 1. Double-click the file to start the app. The GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
@@ -26,7 +26,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
    * **`list`** : Lists all contacts.
 
-   * **`add`**`n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * **`add`**`n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the PlaceBook.
 
    * **`delete`**`3` : Deletes the 3rd contact shown in the current list.
 
@@ -75,7 +75,7 @@ Format: `help`
 
 ### Adding a person: `add`
 
-Adds a person to the address book.
+Adds a person to the PlaceBook.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 
@@ -89,13 +89,13 @@ Examples:
 
 ### Listing all persons : `list`
 
-Shows a list of all persons in the address book.
+Shows a list of all persons in the PlaceBook.
 
 Format: `list`
 
 ### Editing a person : `edit`
 
-Edits an existing person in the address book.
+Edits an existing person in the PlaceBook.
 
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
 
@@ -130,7 +130,7 @@ Examples:
 
 ### Deleting a person : `delete`
 
-Deletes the specified person from the address book.
+Deletes the specified person from the PlaceBook.
 
 Format: `delete INDEX`
 
@@ -139,14 +139,55 @@ Format: `delete INDEX`
 * The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
+* `list` followed by `delete 2` deletes the 2nd person in the PlaceBook.
 * `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+
+### Adding an appointment: `addApp`
+
+Adds an appointment for the specified person with the date (dd-MM-yyyy),
+optional time field (24 hour eg. 1530) and description to the appointment list.
+
+Format: `addApp n/NAME d/DATE [t/TIME] ds/DESCRIPTION`
+
+Examples:
+* `addApp n/John Doe d/14-12-2021 t/1400 ds/dicuss marketing strategies`
+creates an appointment with John Doe on 14-12-2021 at 1400 hrs to discuss marketing strategies
+
+### Editing an appointment: `editApp`
+
+Edits an existing appointment, rewriting all the data in the appointment.
+
+Format: `editApp [INDEX] n/NAME d/DATE [t/TIME] ds/DESCRIPTION`
+
+* Edits the appointment at the specified `INDEX`.
+* The details of the appointment will be changed accordingly.
+
+Examples:
+* `editApp 2 n/John Doe d/21-12-2021 t/1500 ds/dicuss marketing strategies`
+  edits the time of the above created appointment with John Doe to 21-12-2021 at 1500 hrs
+
+### Deleting an appointment: `delApp`
+
+* Deletes an appointment at the specified `INDEX`
+* The index refers to the index number shown in the displayed person list.
+* The index **must be a positive integer** 1, 2, 3, …​
+
+Format: delApp INDEX
+
+Examples:
+* `delApp 1`
 
 ### Clearing all entries : `clear`
 
-Clears all entries from the address book.
+Clears all entries from the PlaceBook.
 
 Format: `clear`
+
+### Listing all appointments : `listapp`  `[coming soon]`
+
+Show all the appointments in the appointment list currently.
+
+Format: `listapp`
 
 ### Exiting the program : `exit`
 
@@ -156,14 +197,14 @@ Format: `exit`
 
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+PlaceBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### Editing the data file
 
-AddressBook data are saved as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+PlaceBook data are saved as a JSON file `[JAR file location]/data/placebook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
-If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run.
+If your changes to the data file makes its format invalid, PlaceBook will discard all data and start with an empty data file at the next run.
 </div>
 
 ### Archiving data files `[coming in v2.0]`
@@ -175,7 +216,7 @@ _Details coming soon ..._
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous PlaceBook home folder.
 
 --------------------------------------------------------------------------------------------------------------------
 

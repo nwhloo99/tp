@@ -257,13 +257,21 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
+* Marketing Professional
+* Meets many people everyday
+* Have to send a lot of emails
 * has a need to manage a significant number of contacts
 * prefer desktop apps over other types
 * can type fast
 * prefers typing to mouse interactions
 * is reasonably comfortable using CLI apps
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+
+**Value proposition**: 
+Our product aims to ease the process of adding many addresses every day, 
+help to create template emails from the addresses and generate emails in batches for a target group of people. 
+The product also keeps track of appointments and in the future, we look to potentially link to gmail.
+
 
 
 ### User stories
@@ -276,23 +284,27 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | user                                       | add a new person               |                                                                        |
 | `* * *`  | user                                       | delete a person                | remove entries that I no longer need                                   |
 | `* * *`  | user                                       | find a person by name          | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details   | minimize chance of someone else seeing them by accident                |
+| `* * *`  | marketeer                                  | add appointments with clients  |                                                                        |
+| `* * *`  | marketeer                                  | delete appointments            | remove cancelled/finished appointments                                 |
+| `* * *`  | new user                                   | view some example contacts     | have an idea of what contact info will look like                       |
 | `*`      | user with many persons in the address book | sort persons by name           | locate a person easily                                                 |
+| `* *`   | marketeer		                            | list appointments with clients  | view and plan my week and meet clients in a timely manner             |
+| `* *`   | user		                                | view my list of contacts	      | see who is already inside and contact clients that are forgotten      |
 
 *{More to be added}*
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `PlaceBook(PB)` and the **Actor** is the `user`, unless specified otherwise)
 
 **Use case: Delete a person**
 
 **MSS**
 
 1.  User requests to list persons
-2.  AddressBook shows a list of persons
+2.  PB shows a list of persons
 3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+4.  PB deletes the person
 
     Use case ends.
 
@@ -304,10 +316,76 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 3a. The given index is invalid.
 
-    * 3a1. AddressBook shows an error message.
+    * 3a1. PB shows an error message.
 
       Use case resumes at step 2.
 
+**Use case: Add appointment**
+
+**MSS**
+
+1. User enters the add appointment command specifying the person, date and description of the appointment.
+
+2. PB creates the appointment and displays a successful message.
+
+Use case ends.
+
+**Extensions**
+
+* 1a. PB detects an error in date formatting.
+    * 1a1. PB displays an error message, showing an example of the correct format.
+    
+	  Use case resumes at step 1.	
+	
+    * 1b. PB does not have the specified person in the contact list
+	    
+	    * 1b1. PB informs the user that the person does not exist
+        
+        Use case ends.
+
+**Use case: List appointments**
+
+**MSS**
+
+1. User enters the list appointments command
+
+2. PB shows a list of all currently added appointments
+
+Use case ends.
+
+**Extensions**
+
+* 1a. PB detects that there are no appointments added
+    * 1a1. PB informs the user that there are no appointments added yet.
+	
+	  Use case ends.
+
+**Use case: Delete appointment**
+
+**MSS**
+
+1. User requests to list appointments
+
+2. PB shows list of appointments
+
+3. User enters the delete appointment command indicating the index of the appointment to be deleted
+
+4. PB deletes the appointment and displays a successful message. 
+
+Use case ends.
+
+**Extensions**
+
+* 1a. The list is empty
+    
+    Use case ends
+
+* 3a. PB detects that the inputted index is out of range
+    * 3a1. PB informs the user that the index is out of range.
+	 
+	 Use case resumes at step 2.
+		
+		
 *{More to be added}*
 
 ### Non-Functional Requirements
@@ -315,13 +393,14 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1.  Should work on any _mainstream OS_ as long as it has Java `11` or above installed.
 2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+4.  The system is not required to handle sending emails to contacts.
+5.  Users can see previously written commands in the same session.
 
 *{More to be added}*
 
 ### Glossary
 
 * **Mainstream OS**: Windows, Linux, Unix, OS-X
-* **Private contact detail**: A contact detail that is not meant to be shared with others
 
 --------------------------------------------------------------------------------------------------------------------
 
