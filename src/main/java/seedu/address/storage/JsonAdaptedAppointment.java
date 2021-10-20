@@ -2,6 +2,9 @@ package seedu.address.storage;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,6 +13,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.UniquePersonList;
 import seedu.address.model.schedule.Appointment;
 
 /**
@@ -17,8 +21,9 @@ import seedu.address.model.schedule.Appointment;
  */
 public class JsonAdaptedAppointment {
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Appointment's %s field is missing!";
+    public static final String MESSAGE_DUPLICATE_PERSON = "Client list contains duplicate person(s).";
 
-    private final JsonAdaptedPerson client;
+    private final List<JsonAdaptedPerson> clients = new ArrayList<>();
     private final String location;
     private final String date;
     private final String description;
@@ -28,10 +33,10 @@ public class JsonAdaptedAppointment {
      * Constructs a {@code JsonAdaptedAppointment} with the given appointment details.
      */
     @JsonCreator
-    public JsonAdaptedAppointment(@JsonProperty("client") JsonAdaptedPerson client,
-            @JsonProperty("location") String location, @JsonProperty("date") String date,
-            @JsonProperty("description") String description, @JsonProperty("time") String time) {
-        this.client = client;
+    public JsonAdaptedAppointment(@JsonProperty("clients") List<JsonAdaptedPerson> clients,
+                                  @JsonProperty("location") String location, @JsonProperty("date") String date,
+                                  @JsonProperty("description") String description, @JsonProperty("time") String time) {
+        this.clients.addAll(clients);
         this.location = location;
         this.date = date;
         this.description = description;
@@ -42,7 +47,7 @@ public class JsonAdaptedAppointment {
      * Converts a given {@code Appointment} into this class for Jackson use.
      */
     public JsonAdaptedAppointment(Appointment source) {
-        client = new JsonAdaptedPerson(source.getClient());
+        clients.addAll(source.getClientList().stream().map(JsonAdaptedPerson::new).collect(Collectors.toList()));
         location = source.getLocation().toString();
         date = source.getDate().toString();
         description = source.getDescription();
@@ -56,10 +61,10 @@ public class JsonAdaptedAppointment {
      */
     public Appointment toModelType() throws IllegalValueException {
 
-        if (client == null) {
+        if (clients == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Person.class.getSimpleName()));
         }
-        final Person modelClient = client.toModelType();
+        final UniquePersonList modelClients = createModelClient(this.clients);
 
         if (location == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
@@ -93,6 +98,18 @@ public class JsonAdaptedAppointment {
         int minute = Integer.parseInt(timeArgs[1]);
         final LocalTime modelTime = LocalTime.of(hour, minute);
 
-        return new Appointment(modelClient, modelLocation, modelDate, modelTime, modelDescription);
+        return new Appointment(modelClients, modelLocation, modelDate, modelTime, modelDescription);
+    }
+
+    private UniquePersonList createModelClient(List<JsonAdaptedPerson> clients) throws IllegalValueException {
+        UniquePersonList modelClients = new UniquePersonList();
+        for (JsonAdaptedPerson jsonAdaptedPerson : clients) {
+            Person person = jsonAdaptedPerson.toModelType();
+            if (modelClients.contains(person)) {
+                throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
+            }
+            modelClients.add(person);
+        }
+        return modelClients;
     }
 }
