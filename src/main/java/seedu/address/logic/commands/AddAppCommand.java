@@ -17,6 +17,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.UniquePersonList;
 import seedu.address.model.schedule.Appointment;
 
 /**
@@ -80,7 +81,9 @@ public class AddAppCommand extends Command {
         }
 
         Person client = lastShownList.get(index.getZeroBased());
-        Appointment newAppointment = new Appointment(client, location, date, time, description);
+        UniquePersonList clients = new UniquePersonList();
+        clients.add(client);
+        Appointment newAppointment = new Appointment(clients, location, date, time, description);
 
         model.addAppointment(newAppointment);
         return new CommandResult(String.format(MESSAGE_SUCCESS, newAppointment));
