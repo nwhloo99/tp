@@ -11,6 +11,7 @@ import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.person.Address;
+import seedu.address.model.person.UniquePersonList;
 
 public class AppointmentTest {
 
@@ -22,8 +23,11 @@ public class AppointmentTest {
         // null -> returns false
         assertFalse(ALICE_APPOINTMENT.equals(null));
 
+        UniquePersonList testClients = new UniquePersonList();
+        testClients.add(ALICE);
+
         // same client, different attributes
-        Appointment editedAliceAppointment = new Appointment(ALICE,
+        Appointment editedAliceAppointment = new Appointment(testClients,
                 new Address("369 Geylang Street"),
                 LocalDate.of(2021, 12, 25),
                 LocalTime.of(21, 30),

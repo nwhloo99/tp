@@ -11,6 +11,7 @@ import seedu.address.model.schedule.Appointment;
 import seedu.address.model.schedule.Schedule;
 
 public class TypicalAppointment {
+
     public static final Appointment ALICE_APPOINTMENT = new AppointmentBuilder()
             .withClient(ALICE)
             .withLocation("369 Tanjong Rhu")

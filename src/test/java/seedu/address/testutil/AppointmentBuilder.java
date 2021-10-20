@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.UniquePersonList;
 import seedu.address.model.schedule.Appointment;
 
 /**
@@ -18,7 +19,7 @@ public class AppointmentBuilder {
     private static final String DEFAULT_TIME = "1800";
     private static final String DEFAULT_DESCRIPTION = "Halloween Sales";
 
-    private Person client;
+    private UniquePersonList clients;
     private Address location;
     private LocalDate date;
     private LocalTime time;
@@ -28,7 +29,9 @@ public class AppointmentBuilder {
      * Creates a {@code} AppointmentBuilder with the default details.
      */
     public AppointmentBuilder() {
-        this.client = new PersonBuilder().withName(DEFAULT_CLIENT).build();
+        UniquePersonList clients = new UniquePersonList();
+        clients.add(new PersonBuilder().withName(DEFAULT_CLIENT).build());
+        this.clients = clients;
         this.location = new Address(DEFAULT_LOCATION);
         this.date = LocalDate.parse(DEFAULT_DATE, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         this.time = LocalTime.parse(DEFAULT_TIME, DateTimeFormatter.ofPattern("HHmm"));
@@ -40,7 +43,7 @@ public class AppointmentBuilder {
      * @param appointmentToCopy The given appointment to copy.
      */
     public AppointmentBuilder(Appointment appointmentToCopy) {
-        this.client = appointmentToCopy.getClient();
+        this.clients = appointmentToCopy.getClients();
         this.location = appointmentToCopy.getLocation();
         this.date = appointmentToCopy.getDate();
         this.time = appointmentToCopy.getTime();
@@ -51,7 +54,9 @@ public class AppointmentBuilder {
      * Sets the {@code client} of the {@code Appointment} that we are building.
      */
     public AppointmentBuilder withClient(Person client) {
-        this.client = client;
+        UniquePersonList clients = new UniquePersonList();
+        clients.add(client);
+        this.clients = clients;
         return this;
     }
 
@@ -59,7 +64,9 @@ public class AppointmentBuilder {
      * Sets the {@code client} of the {@code Appointment} that we are building.
      */
     public AppointmentBuilder withClient(String clientName) {
-        this.client = new PersonBuilder().withName(clientName).build();
+        UniquePersonList clients = new UniquePersonList();
+        clients.add(new PersonBuilder().withName(clientName).build());
+        this.clients = clients;
         return this;
     }
 
@@ -96,6 +103,6 @@ public class AppointmentBuilder {
     }
 
     public Appointment build() {
-        return new Appointment(client, location, date, time, description);
+        return new Appointment(clients, location, date, time, description);
     }
 }
